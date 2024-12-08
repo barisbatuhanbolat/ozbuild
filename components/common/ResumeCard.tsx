@@ -52,12 +52,21 @@ const ResumeCard = ({
 
   const myResume = JSON.parse(resume);
 
-  const updatedAtDate = new Date(resume.updatedAt);
   const currentTime = new Date(); // Current time
 
-  const timeDifferenceMs = currentTime - updatedAtDate;
-
-  const differenceInDays = Math.floor(timeDifferenceMs / (1000 * 60 * 60 * 24));
+  // Ensure updatedAt is a valid Date object
+  const updatedAtDate = new Date(myResume.updatedAt);
+  
+  let differenceInDays: number; // Declare outside the block
+  
+  if (isNaN(updatedAtDate.getTime())) {
+    // Handle invalid date
+    console.error('Invalid updatedAt date');
+    differenceInDays = -1; // Or any other default value you'd like to use
+  } else {
+    const timeDifferenceMs = currentTime.getTime() - updatedAtDate.getTime();
+    differenceInDays = Math.floor(timeDifferenceMs / (1000 * 60 * 60 * 24));
+  }
 
   const onDelete = async () => {
     setIsLoading(true);
