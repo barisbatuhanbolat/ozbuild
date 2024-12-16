@@ -29,7 +29,7 @@ const DashboardCards = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-indigo-800 to-indigo-950 p-6">
+      <div className="h-screen overflow-hidden bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-900">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Top Actions Row */}
         <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center">
