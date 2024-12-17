@@ -148,7 +148,7 @@ const SkillsForm = ({ params }: { params: { id: string } }) => {
         <Button
           disabled={isLoading}
           onClick={onSave}
-          className="bg-indigo-500 hover:bg-indigo-600 text-white"
+          className="bg-purple-500 hover:bg-purple-600 text-white"
         >
           {isLoading ? (
             <>

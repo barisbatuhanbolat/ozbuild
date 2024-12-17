@@ -134,7 +134,7 @@ const PersonalDetailsForm = ({ params }: { params: { id: string } }) => {
           <Button
             type="submit"
             disabled={isLoading}
-            className="bg-indigo-500 hover:bg-indigo-600 text-white"
+            className="bg-purple-500 hover:bg-purple-600 text-white"
           >
             {isLoading ? (
               <>

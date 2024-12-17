@@ -45,7 +45,7 @@ const FinalResumeView = ({
             )}
             <div className="flex max-sm:flex-col justify-center gap-8 my-10">
               <Button
-                className="flex px-12 py-6 gap-2 rounded-full bg-indigo-500 hover:bg-indigo-600 focus:ring-4 focus:ring-primary-700/30 text-white"
+                className="flex px-12 py-6 gap-2 rounded-full bg-purple-500 hover:bg-purple-600 focus:ring-4 focus:ring-primary-700/30 text-white"
                 onClick={handleDownload}
               >
                 <DownloadIcon className="size-6" /> Download

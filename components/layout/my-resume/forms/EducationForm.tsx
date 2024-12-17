@@ -1,5 +1,6 @@
 "use client";
 
+import RichTextEditor from "@/components/common/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -7,17 +8,15 @@ import { useToast } from "@/components/ui/use-toast";
 import { generateEducationDescription } from "@/lib/actions/gemini.actions";
 import { addEducationToResume } from "@/lib/actions/resume.actions";
 import { useFormContext } from "@/lib/context/FormProvider";
-import { Brain, Loader2, Minus, Plus } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import { Brain, Loader2, Minus, Plus, X } from "lucide-react";
+import React, { useState } from "react";
 
 const EducationForm = ({ params }: { params: { id: string } }) => {
-  const listRef = useRef<HTMLDivElement>(null);
   const { formData, handleInputChange } = useFormContext();
   const [isLoading, setIsLoading] = useState(false);
   const [isAiLoading, setIsAiLoading] = useState(false);
-  const [aiGeneratedDescriptionList, setAiGeneratedDescriptionList] = useState(
-    [] as any
-  );
+  const [aiGeneratedDescriptionList, setAiGeneratedDescriptionList] = useState([] as any);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [educationList, setEducationList] = useState(
     formData?.education.length > 0
       ? formData?.education
@@ -32,23 +31,12 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
           },
         ]
   );
-  const [currentAiIndex, setCurrentAiIndex] = useState(
-    educationList.length - 1
-  );
+  const [currentAiIndex, setCurrentAiIndex] = useState(educationList.length - 1);
   const { toast } = useToast();
-
-  useEffect(() => {
-    educationList.forEach((education: any, index: number) => {
-      const textarea = document.getElementById(`description-${index}`) as any;
-      if (textarea) {
-        textarea.value = education.description;
-      }
-    });
-  }, [educationList]);
 
   const handleChange = (event: any, index: number) => {
     const newEntries = educationList.slice();
-    const { name, value } = event.target;
+    const { name, value } = event.target || event;
     newEntries[index][name] = value;
     setEducationList(newEntries);
 
@@ -60,103 +48,49 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
     });
   };
 
-  const AddNewEducation = () => {
-    const newEntries = [
-      ...educationList,
-      {
-        universityName: "",
-        degree: "",
-        major: "",
-        startDate: "",
-        endDate: "",
-        description: "",
-      },
-    ];
-    setEducationList(newEntries);
-
-    handleInputChange({
-      target: {
-        name: "education",
-        value: newEntries,
-      },
-    });
-  };
-
-  const RemoveEducation = () => {
-    const newEntries = educationList.slice(0, -1);
-    setEducationList(newEntries);
-
-    if (currentAiIndex > newEntries.length - 1) {
-      setCurrentAiIndex(newEntries.length - 1);
-    }
-
-    handleInputChange({
-      target: {
-        name: "education",
-        value: newEntries,
-      },
-    });
-  };
-
   const generateEducationDescriptionFromAI = async (index: number) => {
     if (
-      !formData?.education[index]?.universityName ||
-      formData?.education[index]?.universityName === "" ||
-      !formData?.education[index]?.degree ||
-      formData?.education[index]?.degree === "" ||
-      !formData?.education[index]?.major ||
-      formData?.education[index]?.major === ""
+      !educationList[index]?.universityName ||
+      !educationList[index]?.degree ||
+      !educationList[index]?.major
     ) {
       toast({
-        title: "Uh Oh! Something went wrong.",
+        title: "Missing Information",
         description:
-          "Please enter the name of institute, degree and major to generate description.",
+          "Please enter the name of institute, degree, and major to generate a description.",
         variant: "destructive",
-        className: "bg-white border-2",
       });
-
       return;
     }
 
     setCurrentAiIndex(index);
-
     setIsAiLoading(true);
 
     const result = await generateEducationDescription(
-      `${formData?.education[index]?.universityName} on ${formData?.education[index]?.degree} in ${formData?.education[index]?.major}`
+      `${educationList[index]?.universityName} on ${educationList[index]?.degree} in ${educationList[index]?.major}`
     );
 
     setAiGeneratedDescriptionList(result);
-
     setIsAiLoading(false);
-
-    setTimeout(function () {
-      listRef?.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 100);
+    setIsModalOpen(true); // Open the modal
   };
 
   const onSave = async (e: any) => {
     e.preventDefault();
-
     setIsLoading(true);
 
-    const result = await addEducationToResume(params.id, formData.education);
+    const result = await addEducationToResume(params.id, educationList);
 
     if (result.success) {
       toast({
         title: "Information saved.",
         description: "Educational details updated successfully.",
-        className: "bg-white",
       });
     } else {
       toast({
-        title: "Uh Oh! Something went wrong.",
+        title: "Error",
         description: result?.error,
         variant: "destructive",
-        className: "bg-white",
       });
     }
 
@@ -166,14 +100,10 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
   return (
     <div>
       <div className="p-5 shadow-lg rounded-lg border-t-indigo-500 border-t-4 bg-white">
-        <h2 className="text-lg font-semibold leading-none tracking-tight">
-          Education
-        </h2>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Add your educational details
-        </p>
+        <h2 className="text-lg font-semibold">Education</h2>
+        <p className="mt-1 text-sm text-gray-500">Add your educational details</p>
 
-        {educationList.map((item: any, index: number) => (
+         {educationList.map((item: any, index: number) => (
           <div key={index}>
             <div className="grid grid-cols-2 gap-3 border p-3 my-5 rounded-lg">
               <div className="col-span-2 space-y-2">
@@ -252,75 +182,58 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
                     Generate from AI
                   </Button>
                 </div>
-                <Textarea
-                  id={`description-${index}`}
-                  name="description"
-                  onChange={(e) => handleChange(e, index)}
-                  defaultValue={item?.description || ""}
-                  className="no-focus"
-                />
+              <RichTextEditor
+                defaultValue={item?.description || ""}
+                onRichTextEditorChange={(e) => handleChange(e, index)}
+              />
               </div>
             </div>
           </div>
         ))}
-        <div className="mt-3 flex gap-2 justify-between">
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              onClick={AddNewEducation}
-              className="text-primary"
-            >
-              <Plus className="size-4 mr-2" /> Add More
-            </Button>
-            <Button
-              variant="outline"
-              onClick={RemoveEducation}
-              className="text-primary"
-            >
-              <Minus className="size-4 mr-2" /> Remove
-            </Button>
-          </div>
-          <Button
-            disabled={isLoading}
-            onClick={onSave}
-            className="bg-indigo-500 hover:bg-indigo-600 text-white"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 size={20} className="animate-spin" /> &nbsp; Saving
-              </>
-            ) : (
-              "Save"
-            )}
+
+        <div className="mt-3 flex justify-between">
+          <Button onClick={() => setEducationList([...educationList, {}])}>
+            <Plus size={16} /> Add More
+          </Button>
+          <Button onClick={onSave} disabled={isLoading} className="bg-indigo-500 text-white">
+            {isLoading ? "Saving..." : "Save"}
           </Button>
         </div>
       </div>
 
-      {aiGeneratedDescriptionList.length > 0 && (
-        <div className="my-5" ref={listRef}>
-          <h2 className="font-bold text-lg">Suggestions</h2>
-          {aiGeneratedDescriptionList?.map((item: any, index: number) => (
-            <div
-              key={index}
-              onClick={() =>
-                handleChange(
-                  {
-                    target: { name: "description", value: item?.description },
-                  },
-                  currentAiIndex
-                )
-              }
-              className={`p-5 shadow-lg my-4 rounded-lg border-t-2 ${
-                isAiLoading ? "cursor-not-allowed" : "cursor-pointer"
-              }`}
-              aria-disabled={isAiLoading}
-            >
-              <h2 className="font-semibold my-1 text-primary text-gray-800">
-                Level: {item?.activity_level}
-              </h2>
-              <p className="text-justify text-gray-600">{item?.description}</p>
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-5xl p-6 animate-in fade-in zoom-in duration-300">
+            {/* Header */}
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-2xl font-bold text-gray-900">Select a Description</h2>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="p-1 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <X className="w-6 h-6 text-gray-500" />
+              </button>
             </div>
-          ))}
+
+            {/* AI Suggestions - Side by Side Grid */}
+            <div className="grid md:grid-cols-3 gap-6">
+              {aiGeneratedDescriptionList?.map((item: any, idx: number) => (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    handleChange({ target: { name: "description", value: item.description } }, currentAiIndex);
+                    setIsModalOpen(false);
+                  }}
+                  className="group relative bg-gray-50 rounded-xl p-6 text-left transition-all duration-200 hover:shadow-lg hover:scale-102 hover:bg-purple-50 border-2 border-transparent hover:border-purple-200"
+                >
+                  <p className="text-gray-600 text-justify">{item.description}</p>
+                  {/* Hover Effect Bar */}
+                  <div className="absolute inset-x-0 bottom-0 h-1 bg-purple-600 scale-x-0 group-hover:scale-x-100 transition-transform rounded-b-xl" />
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>

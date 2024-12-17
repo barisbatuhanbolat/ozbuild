@@ -44,7 +44,7 @@ const ResumeEditForm = ({
         <div className="flex gap-2">
           {activeFormIndex > 1 && (
             <Button
-              className="flex gap-2 bg-indigo-500 hover:bg-indigo-600 text-white"
+              className="flex gap-2 bg-purple-500 hover:bg-purple-600 text-white"
               size="sm"
               onClick={() => setActiveFormIndex(activeFormIndex - 1)}
             >
@@ -52,7 +52,7 @@ const ResumeEditForm = ({
             </Button>
           )}
           <Button
-            className="flex gap-2 bg-indigo-500 hover:bg-indigo-600 text-white"
+            className="flex gap-2 bg-purple-500 hover:bg-purple-600 text-white"
             size="sm"
             disabled={isLoading}
             onClick={async () => {
