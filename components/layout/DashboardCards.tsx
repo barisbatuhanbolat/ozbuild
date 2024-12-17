@@ -29,7 +29,7 @@ const DashboardCards = () => {
 
   return (
     <>
-      <div className="h-screen overflow-hidden bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-900">
+      <div className="h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-900">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Top Actions Row */}
         <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center">
@@ -43,7 +43,7 @@ const DashboardCards = () => {
           </div>
           
           <div className="flex gap-3">
-            <button className="px-4 py-2 md:flex-none flex items-center justify-center gap-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600">
+            <button className="px-4 py-2 md:flex-none flex items-center justify-center gap-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600">
               <Sparkles className="h-5 w-5" />
               Browse Templates
             </button>

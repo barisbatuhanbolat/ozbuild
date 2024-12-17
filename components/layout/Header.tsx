@@ -8,7 +8,7 @@ const Header = () => {
   const user = useUser();
 
   return (
-    <header className="sticky top-0 z-50">
+    <header className="sticky top-0 w-full z-50">
       <nav className="backdrop-blur-md px-6 py-2.5">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
           <Link href="/" className="flex items-center">
@@ -36,7 +36,7 @@ const Header = () => {
             )}
             <Link
               href={`${!user?.isSignedIn ? "/sign-up" : "/dashboard"}`}
-              className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600"
+              className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600"
             >
               {!user?.isSignedIn ? "Register" : "Dashboard"}
             </Link>

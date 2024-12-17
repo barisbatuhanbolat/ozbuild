@@ -1,9 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { FileText, Wand2, Share2, ArrowRight, ChevronDown } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { FileText, Wand2, Share2, ArrowRight, ChevronDown, Brain, Cpu, Sparkles } from 'lucide-react';
 import { useUser } from '@clerk/nextjs';
 import Link from 'next/link';
+import Header from '@/components/layout/Header';
 
 // Types
 interface Feature {
@@ -28,6 +30,24 @@ const FEATURES: Feature[] = [
     icon: <Share2 className="w-12 h-12" />,
     title: "Export & Share",
     description: "Download in multiple formats or share directly with recruiters via a secure link"
+  }
+];
+
+const features = [
+  {
+    icon: Brain,
+    title: "Smart Analysis",
+    description: "Our AI analyzes your professional experience to highlight key achievements"
+  },
+  {
+    icon: Cpu,
+    title: "ATS Optimization",
+    description: "Format your resume to pass through Applicant Tracking Systems"
+  },
+  {
+    icon: Sparkles,
+    title: "Industry Insights",
+    description: "Get tailored suggestions based on your industry standards"
   }
 ];
 
@@ -69,38 +89,10 @@ const page = () => {
       ))}
     </div>
   );
-
-  const Navbar = () => (
-    <nav className="fixed top-0 w-full z-50 px-8 py-4 flex justify-between items-center">
-      <h1 className="text-2xl font-bold text-white">OzBuild</h1>
-      <div className="space-x-4">
-        {!isLoaded || !user ? (
-          <>
-            <Link href="/sign-in" className="text-white hover:text-purple-200 transition-colors">
-              Login
-            </Link>
-            <Link 
-              href="/sign-up" 
-              className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors"
-            >
-              Register
-            </Link>
-          </>
-        ) : (
-          <Link 
-            href="/dashboard" 
-            className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors"
-          >
-            Dashboard
-          </Link>
-        )}
-      </div>
-    </nav>
-  );
+  const [activeFeature, setActiveFeature] = useState(0);
 
   return (
     <div className="h-screen overflow-hidden bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-900">
-      <Navbar />
       <NavigationDots />
 
       <div 
@@ -108,10 +100,30 @@ const page = () => {
         style={{ transform: `translateY(-${activeSection * 100}vh)` }}
       >
         {/* Hero Section */}
-        <section className="h-screen flex items-center justify-center px-8">
-          <div className="max-w-4xl text-center">
-            <h1 className="text-6xl font-bold text-white mb-4">Create Your Perfect Resume</h1>
-            <h2 className="text-4xl text-purple-300 mb-6">Powered by AI</h2>
+        <section className="relative min-h-screen flex items-center justify-center px-8">
+          {/* Background div with image and overlay */}
+          <div
+            className="absolute inset-0 bg-[url('/img/landing.jpg')] bg-cover bg-center bg-no-repeat"
+            aria-hidden="true"
+          />
+          <div
+            className="absolute inset-0 bg-purple-900/50 backdrop-blur-sm"
+            aria-hidden="true"
+          />
+
+          {/* Header inside Hero Section */}
+          <div className="absolute top-0 left-0 right-0 z-20">
+            <Header />
+          </div>
+
+          {/* Content - adjusted to account for navbar */}
+          <div className="relative max-w-4xl text-center z-10 mt-16">
+            <h1 className="text-6xl font-bold text-white mb-4">
+              Create Your Perfect Resume
+            </h1>
+            <h2 className="text-4xl text-purple-300 mb-6">
+              Powered by AI
+            </h2>
             <p className="text-xl text-gray-200 mb-8">
               Transform your career story into a compelling resume in minutes
             </p>
@@ -120,15 +132,17 @@ const page = () => {
               className="bg-purple-500 text-white px-8 py-4 rounded-full font-semibold hover:bg-purple-600 transition-all group inline-block"
             >
               <span className="flex items-center">
-                Begin Your Journey 
+                Begin Your Journey
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
               </span>
             </Link>
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce text-white">
-              <ChevronDown className="w-8 h-8" />
-            </div>
+          </div>
+
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce text-white z-10">
+            <ChevronDown className="w-8 h-8" />
           </div>
         </section>
+
 
         {/* Features Grid */}
         <section className="h-screen flex items-center justify-center px-8">
@@ -150,24 +164,89 @@ const page = () => {
         </section>
 
         {/* AI Section */}
-        <section className="h-screen flex items-center justify-center px-8">
-          <div className="max-w-4xl grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-4xl font-bold text-white mb-6">AI-Powered Excellence</h2>
-              <p className="text-gray-300 mb-6">
-                Our advanced AI technology analyzes your experience and skills to create 
-                perfectly tailored resumes that stand out to both human recruiters and ATS systems.
-              </p>
-              <ul className="space-y-4">
-                {['Smart content optimization', 'ATS-friendly formatting', 'Industry-specific suggestions'].map((item, index) => (
-                  <li key={index} className="flex items-center text-gray-200">
-                    <div className="w-2 h-2 bg-purple-400 rounded-full mr-3" />
-                    {item}
-                  </li>
+        <section className="min-h-screen flex items-center justify-center px-8 py-16">
+          <div className="max-w-6xl w-full grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <h2 className="text-5xl font-bold text-white mb-6 leading-tight">
+                  Transform Your Resume with
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400"> AI Magic</span>
+                </h2>
+                <p className="text-gray-300 text-lg">
+                  Experience the future of resume building with our advanced AI technology.
+                </p>
+              </motion.div>
+
+              <div className="space-y-4">
+                {features.map((feature, index) => (
+                  <motion.div
+                    key={index}
+                    className={`p-4 rounded-xl transition-all cursor-pointer ${
+                      activeFeature === index 
+                        ? 'bg-purple-800/50 shadow-lg shadow-purple-500/40' 
+                        : 'hover:bg-purple-800/50'
+                    }`}
+                    onClick={() => setActiveFeature(index)}
+                    whileHover={{ scale: 1.02 }}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="p-2 rounded-lg bg-purple-500/20">
+                        <feature.icon className="w-6 h-6 text-purple-400" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-white mb-1">{feature.title}</h3>
+                        <p className="text-gray-300 text-sm">{feature.description}</p>
+                      </div>
+                    </div>
+                  </motion.div>
                 ))}
-              </ul>
+              </div>
             </div>
-            <div className="bg-gradient-to-br from-purple-500 to-indigo-500 h-64 rounded-xl" />
+
+            <div className="relative">
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-[100px] opacity-30"
+                animate={{
+                  scale: [1, 1.1, 1],
+                  opacity: [0.3, 0.5, 0.3],
+                }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
+              <motion.div 
+                className="relative bg-gradient-to-br from-purple-600 to-purple-800 p-8 rounded-2xl shadow-2xl"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="h-64 flex items-center justify-center">
+                  <motion.div
+                    className="text-6xl"
+                    animate={{
+                      scale: [1, 1.1, 1],
+                      rotate: [0, 5, -5, 0],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    🧠
+                  </motion.div>
+                </div>
+              </motion.div>
+            </div>
           </div>
         </section>
 

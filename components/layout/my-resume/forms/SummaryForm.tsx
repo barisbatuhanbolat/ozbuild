@@ -148,7 +148,7 @@ const SummaryForm = ({ params }: { params: { id: string } }) => {
                   target: { name: "summary", value: item?.summary },
                 })
               }
-              className={`p-5 shadow-lg my-4 rounded-lg border-t-2 ${
+              className={`p-5 shadow-lg my-4 rounded-lg border-t-2 bg-white ${
                 isAiLoading ? "cursor-not-allowed" : "cursor-pointer"
               }`}
               aria-disabled={isAiLoading}
