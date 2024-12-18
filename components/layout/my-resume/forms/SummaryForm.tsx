@@ -1,9 +1,10 @@
 "use client";
 
+import RichTextEditor from "@/components/common/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { generateSummary } from "@/lib/actions/gemini.actions";
+import { generateSummary } from "@/lib/actions/gpt.actions";
 import { updateResume } from "@/lib/actions/resume.actions";
 import { useFormContext } from "@/lib/context/FormProvider";
 import { Brain, Loader2, X } from "lucide-react";
@@ -89,12 +90,11 @@ const SummaryForm = ({ params }: { params: { id: string } }) => {
               Generate from AI
             </Button>
           </div>
-          <Textarea
-            className="no-focus min-h-[10em]"
-            required
-            value={summary}
-            onChange={handleSummaryChange}
-            defaultValue={formData?.summary || ""}
+          <RichTextEditor
+            defaultValue={formData?.workSummary || ""}
+            onRichTextEditorChange={(value: string) =>
+              {handleSummaryChange}
+            }
           />
           <div className="flex justify-end">
             <Button
@@ -141,11 +141,6 @@ const SummaryForm = ({ params }: { params: { id: string } }) => {
                   className="group relative bg-gray-50 rounded-xl p-6 text-left transition-all duration-200 hover:shadow-lg hover:scale-102 hover:bg-purple-50 border-2 border-transparent hover:border-purple-200"
                 >
                   <div className="space-y-4">
-                    <div>
-                      <h3 className="font-semibold text-xl text-gray-900">
-                        Level: {item?.experience_level}
-                      </h3>
-                    </div>
                     <p className="text-gray-600 text-sm leading-relaxed">
                       {item?.summary}
                     </p>

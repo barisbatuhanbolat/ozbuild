@@ -7,7 +7,7 @@ import React from "react";
 const Dashboard = () => {
   return (
     <PageWrapper>
-      <Header />
+      <Header/>
       <div>
         {/* Main Content Area */}
         <div>

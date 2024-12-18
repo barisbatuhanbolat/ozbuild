@@ -4,7 +4,7 @@ import RichTextEditor from "@/components/common/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { generateExperienceDescription } from "@/lib/actions/gemini.actions";
+import { generateExperienceDescription } from "@/lib/actions/gpt.actions";
 import { addExperienceToResume } from "@/lib/actions/resume.actions";
 import { useFormContext } from "@/lib/context/FormProvider";
 import { Brain, Loader2, Minus, Plus, X } from "lucide-react";
@@ -250,11 +250,6 @@ const ExperienceForm = ({ params }: { params: { id: string } }) => {
                   className="group relative bg-gray-50 rounded-xl p-6 text-left transition-all duration-200 hover:shadow-lg hover:scale-102 hover:bg-purple-50 border-2 border-transparent hover:border-purple-200"
                 >
                   <div className="space-y-4">
-                    <div>
-                      <h3 className="font-semibold text-xl text-gray-900">
-                        Level: {item?.activity_level}
-                      </h3>
-                    </div>
                     <p className="text-gray-600 text-sm leading-relaxed">
                       {item?.description}
                     </p>
