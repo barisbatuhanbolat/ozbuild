@@ -60,13 +60,6 @@ const DashboardCards = () => {
                 className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-400"
               />
             </div>
-
-            <div className="flex gap-3">
-              <button className="px-4 py-2 md:flex-none flex items-center justify-center gap-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600">
-                <Sparkles className="h-5 w-5" />
-                Browse Templates
-              </button>
-            </div>
           </div>
 
           {/* Resumes Grid */}

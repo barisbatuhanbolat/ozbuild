@@ -76,6 +76,22 @@ const ExperienceForm = ({ params }: { params: { id: string } }) => {
     setIsModalOpen(true); // Open modal after fetching data
   };
 
+  const RemoveExperience = () => {
+    const newEntries = experienceList.slice(0, -1);
+    setExperienceList(newEntries);
+
+    if (currentAiIndex > newEntries.length - 1) {
+      setCurrentAiIndex(newEntries.length - 1);
+    }
+
+    handleInputChange({
+      target: {
+        name: "experience",
+        value: newEntries,
+      },
+    });
+  };
+
   const onSave = async (e: any) => {
     e.preventDefault();
     setIsLoading(true);
@@ -209,13 +225,35 @@ const ExperienceForm = ({ params }: { params: { id: string } }) => {
         </div>
       ))}
         </div>
-
-        <div className="mt-3 flex justify-between">
-          <Button onClick={() => setExperienceList([...experienceList, {}])}>
-            <Plus size={16} /> Add More
-          </Button>
-          <Button onClick={onSave} disabled={isLoading} className="bg-indigo-500 text-white">
-            {isLoading ? "Saving..." : "Save"}
+        <div className="mt-3 flex gap-2 justify-between">
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={() => setExperienceList([...experienceList, {}])}
+              className="text-primary"
+            >
+              <Plus className="size-4 mr-2" /> Add More
+            </Button>
+            <Button
+              variant="outline"
+              onClick={RemoveExperience}
+              className="text-primary"
+            >
+              <Minus className="size-4 mr-2" /> Remove
+            </Button>
+          </div>
+          <Button
+            disabled={isLoading}
+            onClick={onSave}
+            className="bg-indigo-500 hover:bg-indigo-600 text-white"
+          >
+            {isLoading ? (
+              <>
+                <Loader2 size={20} className="animate-spin" /> &nbsp; Saving
+              </>
+            ) : (
+              "Save"
+            )}
           </Button>
         </div>
       </div>
