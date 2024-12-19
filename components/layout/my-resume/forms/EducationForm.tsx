@@ -75,6 +75,22 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
     setIsModalOpen(true); // Open the modal
   };
 
+  const RemoveEducation = () => {
+    const newEntries = educationList.slice(0, -1);
+    setEducationList(newEntries);
+
+    if (currentAiIndex > newEntries.length - 1) {
+      setCurrentAiIndex(newEntries.length - 1);
+    }
+
+    handleInputChange({
+      target: {
+        name: "education",
+        value: newEntries,
+      },
+    });
+  };
+
   const onSave = async (e: any) => {
     e.preventDefault();
     setIsLoading(true);
@@ -182,28 +198,56 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
                     Generate from AI
                   </Button>
                 </div>
-              <RichTextEditor
-                defaultValue={item?.description || ""}
-                onRichTextEditorChange={(e) => handleChange(e, index)}
-              />
+                <Textarea
+                  id={`description-${index}`}
+                  name="description"
+                  onChange={(e) => handleChange(e, index)}
+                  defaultValue={item?.description || ""}
+                  className="no-focus"
+                />
               </div>
             </div>
           </div>
         ))}
-
-        <div className="mt-3 flex justify-between">
-          <Button onClick={() => setEducationList([...educationList, {}])}>
-            <Plus size={16} /> Add More
-          </Button>
-          <Button onClick={onSave} disabled={isLoading} className="bg-indigo-500 text-white">
-            {isLoading ? "Saving..." : "Save"}
+        
+        <div className="mt-3 flex gap-2 justify-between">
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={() => setEducationList([...educationList, {}])}
+              className="text-primary"
+            >
+              <Plus className="size-4 mr-2" /> Add More
+            </Button>
+            <Button
+              variant="outline"
+              onClick={RemoveEducation}
+              className="text-primary"
+            >
+              <Minus className="size-4 mr-2" /> Remove
+            </Button>
+          </div>
+          <Button
+            disabled={isLoading}
+            onClick={onSave}
+            className="bg-indigo-500 hover:bg-indigo-600 text-white"
+          >
+            {isLoading ? (
+              <>
+                <Loader2 size={20} className="animate-spin" /> &nbsp; Saving
+              </>
+            ) : (
+              "Save"
+            )}
           </Button>
         </div>
+
+
       </div>
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-5xl p-6 animate-in fade-in zoom-in duration-300">
             {/* Header */}
             <div className="flex justify-between items-center mb-8">

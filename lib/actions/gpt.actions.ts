@@ -84,7 +84,7 @@ export async function generateEducationDescription(educationInfo: string) {
 }
 
 export async function generateExperienceDescription(experienceInfo: string) {
-  const prompt = `Given that I have experience working as ${experienceInfo}, provide a summary of three levels of activities I performed in that position, preferably as a list: High Activity, Medium Activity, and Low Activity. Each summary should be detailed and 4-5 lines long and written from my perspective, reflecting on my past experiences in that workplace. The output should be an array of JSON objects, each containing 'activity_level' and 'description' fields. Use example work samples if needed, but do not insert placeholders for me to fill in.`;
+  const prompt = `Given that I have experience working as ${experienceInfo}, provide a summary of three levels of activities I performed in that position, preferably as a list: High Activity, Medium Activity, and Low Activity. Each summary should be detailed and 4-5 sentences long with detail and written from my perspective, reflecting on my past experiences in that workplace. The output should be an array of JSON objects, each containing 'activity_level' and 'description' fields. Use example work samples if needed, but do not insert placeholders for me to fill in.`;
 
   try 
   {

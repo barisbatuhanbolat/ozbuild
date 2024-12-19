@@ -90,11 +90,12 @@ const SummaryForm = ({ params }: { params: { id: string } }) => {
               Generate from AI
             </Button>
           </div>
-          <RichTextEditor
-            defaultValue={formData?.workSummary || ""}
-            onRichTextEditorChange={(value: string) =>
-              {handleSummaryChange}
-            }
+          <Textarea
+            className="no-focus min-h-[10em]"
+            required
+            value={summary}
+            onChange={handleSummaryChange}
+            defaultValue={formData?.summary || ""}
           />
           <div className="flex justify-end">
             <Button
@@ -116,7 +117,7 @@ const SummaryForm = ({ params }: { params: { id: string } }) => {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-5xl p-6 animate-in fade-in zoom-in duration-300">
             {/* Header */}
             <div className="flex justify-between items-center mb-8">
