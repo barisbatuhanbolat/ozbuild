@@ -149,13 +149,13 @@ const ResumeEditForm = ({
       {activeFormIndex == 1 ? (
         <PersonalDetailsForm params={params} />
       ) : activeFormIndex == 2 ? (
-        <SummaryForm params={params} />
-      ) : activeFormIndex == 3 ? (
         <ExperienceForm params={params} />
+      ) : activeFormIndex == 3 ? (
+       <EducationForm params={params} />
       ) : activeFormIndex == 4 ? (
-        <EducationForm params={params} />
-      ) : activeFormIndex == 5 ? (
         <SkillsForm params={params} />
+      ) : activeFormIndex == 5 ? (
+        <SummaryForm params={params} />
       ) : activeFormIndex == 6 ? (
         redirect("/my-resume/" + params.id + "/view")
       ) : null}

@@ -68,7 +68,7 @@ const ExperienceForm = ({ params }: { params: { id: string } }) => {
     setCurrentAiIndex(index);
 
     const result = await generateExperienceDescription(
-      `${experienceList[index]?.title} at ${experienceList[index]?.companyName}`
+      `${experienceList[index]?.title} at ${experienceList[index]?.companyName}` , experienceList[index]?.workSummary
     );
 
     setAiGeneratedSummaryList(result);

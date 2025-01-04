@@ -67,12 +67,12 @@ const EducationForm = ({ params }: { params: { id: string } }) => {
     setIsAiLoading(true);
 
     const result = await generateEducationDescription(
-      `${educationList[index]?.universityName} on ${educationList[index]?.degree} in ${educationList[index]?.major}`
+      `${educationList[index]?.universityName} on ${educationList[index]?.degree} in ${educationList[index]?.major}`, educationList[index]?.description
     );
 
     setAiGeneratedDescriptionList(result);
     setIsAiLoading(false);
-    setIsModalOpen(true); // Open the modal
+    setIsModalOpen(true);
   };
 
   const RemoveEducation = () => {

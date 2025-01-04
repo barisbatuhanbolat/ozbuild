@@ -33,10 +33,13 @@ const SummaryForm = ({ params }: { params: { id: string } }) => {
 
   const generateSummaryFromAI = async () => {
     setIsAiLoading(true);
-    const result = await generateSummary(formData?.jobTitle);
+    const result = await generateSummary(
+      formData,  // Pass entire formData object
+      formData?.summary // Pass existing summary if available
+    );
     setAiGeneratedSummaryList(result);
     setIsAiLoading(false);
-    setIsModalOpen(true); // Open modal after fetching data
+    setIsModalOpen(true);
   };
 
   const onSave = async (e: any) => {
